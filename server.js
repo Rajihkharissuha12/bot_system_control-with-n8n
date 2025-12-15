@@ -1,21 +1,23 @@
-import express from "express";
-import indexRoute from "./src/route/index.js";
-import commandRoute from "./src/route/commands.js";
+import app from "./src/app.js";
 import { client } from "./src/bot/client.js";
-import { registerCommands } from "./src/bot/register.js";
-import { config } from "./src/config.js";
+import { loadCommands, registerCommands } from "./src/bot/register.js";
+import { config } from "./src/config/app.config.js";
 
-const app = express();
-app.use(express.json());
+async function start() {
+  // Load commands dari database
+  await loadCommands();
 
-// register routes
-app.use("/", indexRoute);
-app.use("/api/commands", commandRoute);
+  // Register commands ke Discord
+  await registerCommands();
 
-// start discord bot
-await registerCommands();
-client.login(config.token);
+  // Start Discord Bot
+  client.login(config.token);
 
-// start express
-const PORT = 3000;
-app.listen(PORT, () => console.log(`API running di port ${PORT}`));
+  // Start Express Server
+  const PORT = config.port;
+  app.listen(PORT, () => {
+    console.log(`🚀 API running di port ${PORT}`);
+  });
+}
+
+start().catch(console.error);

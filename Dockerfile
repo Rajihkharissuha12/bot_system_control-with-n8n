@@ -1,20 +1,23 @@
-# Gunakan Node.js versi LTS
+# Node.js versi LTS
 FROM node:18-alpine
 
-# Set working directory
+# working directory
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci --only=production
 
-# Copy seluruh project
+# Copy project
 COPY . .
 
-# Expose port 3010
+# Port
 EXPOSE 3010
 
-# Command saat container dijalankan
-CMD ["npm", "start"]
+# Set environment
+ENV NODE_ENV=production
+
+# Command container
+CMD ["node", "server.js"]

@@ -1,11 +1,19 @@
 version: "3.9"
 
 services:
-  discord-bot:
-    build: .
-    container_name: discord_bot_command
+  n8n-bot:
+    container_name: n8n-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3010:3000"
-    env_file:
-      - .env
+    environment:
+      - PORT=3000
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - APP_ID=${APP_ID}
+      - TARGET_CHANNEL_ID=${TARGET_CHANNEL_ID}
+      - N8N_WEBHOOK=${N8N_WEBHOOK}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
     restart: always

@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import { handleInteraction } from "./commands.js";
+import { handleInteraction } from "../controllers/discord.controller.js";
 
 export const client = new Client({
   intents: [
